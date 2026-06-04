@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import User from "../model/User.js";
+import TryCatch from "../middlewares/trycatch.js";
 
-export const loginUser = async (req: Request, res: Response) => {
- try {
-  const { email, name, picture } = req.body;
+export const loginUser = TryCatch(async(req,res)=>{
+   const { email, name, picture } = req.body;
   // if (!email || !name || !picture) {
   //  return res.status(400).json({ message: "Email, name and picture are required" });
   // }
@@ -16,7 +16,4 @@ export const loginUser = async (req: Request, res: Response) => {
    expiresIn: "15d",
   });
   res.status(200).json({ message: "Logged in successfully", token, user });
- } catch (error:any) {
-  res.status(500).json({ message: error.message });
- }
-};
+} )
