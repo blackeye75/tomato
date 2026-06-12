@@ -1,0 +1,22 @@
+import type React from "react";
+
+export interface User {
+  _id: string;
+  name: string;
+  email: string;
+  image: string;
+  role: String
+}
+
+export interface LocationData {
+  latitude: number;
+  longitude: number;
+  formatedAddress: string;
+}
+
+export interface AppContextType {
+  user: User | null;
+  loading: boolean;
+  isAuth: boolean;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+}
