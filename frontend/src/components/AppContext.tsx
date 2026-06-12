@@ -1,15 +1,16 @@
 import axios from "axios";
 import { createContext, useEffect, useState, type ReactNode } from "react";
 import { authService } from "../main";
+import type { AppContextType, User } from "../types";
 
-const AppContext = createContext(undefined)
+const AppContext = createContext<AppContextType | undefined>(undefined)
 
 interface AppProviderProps {
   children: ReactNode
 }
 
 export const AppProvider = ({ children }: AppProviderProps) => {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState<User | null>(null)
   const [isAuth, setIsAuth] = useState(false)
   const [loading, setLoading] = useState(true)
   const [location, setLocation] = useState(null)
@@ -34,5 +35,5 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   useEffect(() => {
     fetchUser()
   }, [])
-  return <AppContext.Provider value={{}}>{children}</AppContext.Provider>
+  return <AppContext.Provider value={{ user, loading, isAuth, setUser, setIsAuth, setLoading }}>{children}</AppContext.Provider>
 }

@@ -19,4 +19,6 @@ export interface AppContextType {
   loading: boolean;
   isAuth: boolean;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
