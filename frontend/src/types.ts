@@ -5,7 +5,7 @@ export interface User {
   name: string;
   email: string;
   image: string;
-  role: String
+  role: string
 }
 
 export interface LocationData {

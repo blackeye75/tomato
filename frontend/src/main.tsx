@@ -3,13 +3,16 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import { AppProvider } from './components/appContext.tsx';
 
 export const authService = "http://localhost:5000"
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <GoogleOAuthProvider clientId="283635401423-qa4kg00u2ddouebp6n2945nq01j887fo.apps.googleusercontent.com">
-      <App />
+      <AppProvider>
+        <App />
+      </AppProvider>
     </GoogleOAuthProvider>
 
   </StrictMode>,
