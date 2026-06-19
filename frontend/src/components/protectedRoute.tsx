@@ -4,7 +4,7 @@ import { useAppData } from "../context/AppContext"
 const ProtectedRoute = () => {
   const { isAuth, user, loading } = useAppData()
   const location = useLocation()
-  // console.log(user)
+  console.log(user)
   if (loading) return null;
   if (!isAuth) {
     return <Navigate to="/login" replace />
