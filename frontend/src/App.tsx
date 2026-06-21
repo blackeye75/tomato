@@ -8,22 +8,30 @@ import ProtectedRoute from './components/protectedRoute'
 import SelectRole from './pages/SelectRole'
 import Navbar from './components/navbar'
 import Account from './pages/Account'
+import NotFound from './pages/NotFound'
+import Unauthorized from './pages/Unauthorized'
 function App() {
 
 
   return (
     <>
       <BrowserRouter>
-      <Navbar/>
+        <Navbar />
         <Routes>
+          {/* Public Routes */}
           <Route element={<PublicRoute />} >
             <Route path='/login' element={<Login />} />
           </Route>
+
+          {/* Protected Routes */}
           <Route element={<ProtectedRoute />} >
             <Route path='/' element={<Home />} />
             <Route path='/select-role' element={<SelectRole />} />
             <Route path='/account' element={<Account />} />
           </Route>
+          {/* Error Pages */}
+          <Route path="/unauthorized" element={<Unauthorized />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <Toaster />
       </BrowserRouter>

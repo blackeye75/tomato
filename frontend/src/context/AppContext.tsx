@@ -16,7 +16,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const [location, setLocation] = useState(null)
   const [loadingLocation, setLoadingLocation] = useState(false)
   const [city, setcity] = useState("Featching location...")
-  console.log(user)
+  // console.log(user)
   async function fetchUser() {
     const token = localStorage.getItem("token");
 

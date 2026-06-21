@@ -2,7 +2,7 @@ import React from 'react'
 import { useAppData } from '../context/AppContext'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import { BiPackage } from 'react-icons/bi'
+import { BiHome, BiPackage } from 'react-icons/bi'
 
 const Account = () => {
 
@@ -18,23 +18,27 @@ const Account = () => {
   }
   return (
     <div className='min-h-screen bg-gray-50 px-4 py-6' >
-      <div className="mx-auto max-w-md rounded-full bg-white shadow-sm">
+      <div className="mx-auto max-w-md rounded-lg bg-white shadow-sm">
         <div className='flex items-center gap-4 border-b p-5' >
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-red-500 text-xl font-semibold text-white">
             {firstLetter}
           </div>
           <div>
-            <h2 className='text-lg font-semibold' >{user?.name}</h2>
-            <p className='text-gray-500 text-sm' >{user?.email}</p>
+            <h2 className='text-lg font-semibold' >{user?.name ? user.name.charAt(0).toUpperCase() + user.name.slice(1) : ''}</h2>
+            <p className='text-gray-500 text-sm -mt-1' >{user?.email}</p>
           </div>
         </div>
         <div className='divide-y' >
           <div className="flex  cursor-pointer items-center gap-4 p-5 hover:bg-gray-50" onClick={() => navigate('/orders')}>
-            <BiPackage className='' />
+            <BiPackage className='w-5' />
             <span className='text-gray-700' >Orders</span>
           </div>
+          <div className="flex  cursor-pointer items-center gap-4 p-5 hover:bg-gray-50" onClick={() => navigate('/address')}>
+            <BiHome className='w-5' />
+            <span className='text-gray-700' >Address</span>
+          </div>
           <div className="flex cursor-pointer items-center gap-4 p-5 hover:bg-gray-50" onClick={logouthandler}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-6 w-6">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-5 w-5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
             </svg>
             <span className='text-gray-700' >Logout</span>
