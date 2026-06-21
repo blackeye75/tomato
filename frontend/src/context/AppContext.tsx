@@ -16,15 +16,23 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const [location, setLocation] = useState(null)
   const [loadingLocation, setLoadingLocation] = useState(false)
   const [city, setcity] = useState("Featching location...")
+  console.log(user)
   async function fetchUser() {
+    const token = localStorage.getItem("token");
+
+  if (!token) {
+    setLoading(false);
+    return;
+  }
     try {
-      const token = localStorage.getItem("token")
-      const data = await axios.get(`${authService}/api/auth/me`, {
+      // const token = localStorage.getItem("token")
+      const {data} = await axios.get(`${authService}/api/auth/me`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
-      setUser(data.data)
+      // console.log(data.data.user)
+      setUser(data.user)
       setIsAuth(true)
     } catch (error) {
       console.log(error)
