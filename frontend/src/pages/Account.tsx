@@ -11,9 +11,9 @@ const Account = () => {
   const navigate = useNavigate()
   const logouthandler = () => {
     localStorage.removeItem("token")
+    navigate("/login")
     setUser(null)
     setIsAuth(false)
-    navigate("/login")
     toast.success("Logged out successfully")
   }
   return (
