@@ -7,8 +7,11 @@ import { BiHome, BiPackage } from 'react-icons/bi'
 const Account = () => {
 
   const { user, setUser, setIsAuth } = useAppData()
+  // console.log(user.image)
   const firstLetter = user?.name?.charAt(0).toUpperCase()
   const navigate = useNavigate()
+  const [imageError, setImageError] = React.useState(false)
+  
   const logouthandler = () => {
     localStorage.removeItem("token")
     navigate("/login")
@@ -16,12 +19,22 @@ const Account = () => {
     setIsAuth(false)
     toast.success("Logged out successfully")
   }
+  
   return (
     <div className='min-h-screen bg-gray-50 px-4 py-6' >
       <div className="mx-auto max-w-md rounded-lg bg-white shadow-sm">
         <div className='flex items-center gap-4 border-b p-5' >
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-red-500 text-xl font-semibold text-white">
-            {firstLetter}
+          <div className="flex h-14 w-14 items-center justify-center rounded-full overflow-hidden bg-blue-100">
+            {user?.image && !imageError ? (
+              <img 
+                src={user.image} 
+                className='w-full h-full object-cover' 
+                alt="user profile"
+                onError={() => setImageError(true)}
+              />
+            ) : (
+              <span className='text-xl font-semibold text-blue-600'>{firstLetter}</span>
+            )}
           </div>
           <div>
             <h2 className='text-lg font-semibold' >{user?.name ? user.name.charAt(0).toUpperCase() + user.name.slice(1) : ''}</h2>
