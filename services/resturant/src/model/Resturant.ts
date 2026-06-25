@@ -43,7 +43,22 @@ const schema = new Schema<IResturant>({
     type:{
       type:String,
       enum:["Point"],
+      required:true,
+    },
+    // index:"2dsphere",
+      
+    coordinates:{
+      type:[Number],
       required:true
+    },
+    formatedAddress:{
+      type:String,
     }
+  },
+  isOpen:{
+    type:Boolean,
+    default:false
   }
+},{
+  timestamps:true
 })
