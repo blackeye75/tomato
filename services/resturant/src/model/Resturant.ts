@@ -1,11 +1,11 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-export interface IResturant extends Document {
+export interface IRestaurant extends Document {
  name: string;
  description: string;
  image: string;
  ownerId: string;
- phone:number;
+ phone: number;
  isVerifed: boolean;
  autoLocation: {
   type: "Point";
@@ -16,49 +16,56 @@ export interface IResturant extends Document {
  createdAt: Date;
 }
 
-const schema = new Schema<IResturant>({
-  // name:{
-  //   type:String,
-  //   required:true,
-  //   trim:true
-  // },
-  description:String,
-  image:{
-    type:String,
-    required:true
+const schema = new Schema<IRestaurant>(
+ {
+  name: {
+   type: String,
+   required: true,
+   trim: true,
   },
-  phone:{
-    type:Number,
-    required:true
+  description: String,
+  image: {
+   type: String,
+   required: true,
   },
-  ownerId:{
-    type:String,
-    required:true
+  phone: {
+   type: Number,
+   required: true,
   },
-  isVerifed:{
-    type:Boolean,
-    required:true
+  ownerId: {
+   type: String,
+   required: true,
   },
-  autoLocation:{
-    type:{
-      type:String,
-      enum:["Point"],
-      required:true,
-    },
-    // index:"2dsphere",
-      
-    coordinates:{
-      type:[Number],
-      required:true
-    },
-    formatedAddress:{
-      type:String,
-    }
+  isVerifed: {
+   type: Boolean,
+   required: true,
   },
-  isOpen:{
-    type:Boolean,
-    default:false
-  }
-},{
-  timestamps:true
-})
+  autoLocation: {
+   type: {
+    type: String,
+    enum: ["Point"],
+    required: true,
+   },
+   // index:"2dsphere",
+
+   coordinates: {
+    type: [Number],
+    required: true,
+   },
+   formatedAddress: {
+    type: String,
+   },
+  },
+  isOpen: {
+   type: Boolean,
+   default: false,
+  },
+ },
+ {
+  timestamps: true,
+ },
+);
+
+schema.index({ autoLocation: "2dsphere" });
+
+export default mongoose.model<IRestaurant>("Restaurant", schema);
