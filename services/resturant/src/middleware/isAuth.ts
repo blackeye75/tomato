@@ -8,6 +8,7 @@ export interface IUser {
  name: string;
  image: string;
  role: string;
+ restaurantId: string;
 }
 export interface AuthenticatedRequest extends Request {
  user?: IUser | null;
@@ -52,7 +53,7 @@ export const isSeller = async (
  const user = req.user;
  if (user && user.role !== "seller") {
   res.status(401).json({
-   message: "You ",
+   message: "You are not authorized seller",
   });
   return;
  }

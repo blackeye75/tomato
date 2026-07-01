@@ -1,14 +1,16 @@
-import express from 'express'
-import connectDB from './config/db.js';
-import dotenv from 'dotenv'
-dotenv.config()
+import express from "express";
+import connectDB from "./config/db.js";
+import dotenv from "dotenv";
+import restaurantRoute from "./routes/restaurant.js";
+dotenv.config();
 
+const app = express();
 
-const app = express()
+const PORT = process.env.PORT || 5001;
 
-const PORT = process.env.PORT || 5001 ;
+app.use("/api/restaurant", restaurantRoute);
 
 app.listen(PORT, () => {
-  console.log(`Restaurant service is running on port ${PORT}`);
-  connectDB();
+ console.log(`Restaurant service is running on port ${PORT}`);
+ connectDB();
 });

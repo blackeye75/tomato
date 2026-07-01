@@ -1,14 +1,16 @@
 import axios from "axios";
+import { Response } from "express";
 import getBuffer from "../config/datauri.js";
 import { AuthenticatedRequest } from "../middleware/isAuth.js";
 import TryCatch from "../middleware/tryCatch.js";
-import Resturant from "../model/Resturant.js";
+import Restaurant from "../model/Resturant.js";
+import jwt from "jsonwebtoken";
 
 export const addRestaurants = TryCatch(
  async (req: AuthenticatedRequest, res) => {
   const user = req.user;
   if (!user) return res.status(401).json({ message: "Unauthorize" });
-  const existingRestaurants = await Resturant.findOne({ owner_id: user._id });
+  const existingRestaurants = await Restaurant.findOne({ owner_id: user._id });
   if (existingRestaurants) {
    return res.status(400).json({ message: "Resturant already exists" });
   }
@@ -34,8 +36,49 @@ export const addRestaurants = TryCatch(
    `${process.env.UTILS_SERVICE}/api/upload`,
    { buffer: fileBuffer.content },
   );
-  const restaurant = await Resturant.create({
-    name,description,phone,image:uploadResult.url,ownerId:user._id,autoLocation:{type:"Point"}
-  })
+  const restaurant = await Restaurant.create({
+   name,
+   description,
+   phone,
+   image: uploadResult.url,
+   ownerId: user._id,
+   autoLocation: {
+    type: "Point",
+    coordinates: [Number(latitude), Number(longitude)],
+    formattedAddress,
+   },
+  });
+  return res.status(201).json({
+   message: "Restaurant Created Successfully",
+   restaurant,
+  });
  },
 );
+
+export const fetchMyRestaurant = TryCatch(
+ async (req: AuthenticatedRequest, res: Response) => {
+  if (!req.user) {
+   return res.status(401).json({ message: "Please Login" });
+  }
+  const restaurant = await Restaurant.findOne({ ownerId: req.user._id });
+  if (!restaurant) {
+   return res.status(400).json({ mssage: "Invalid user" });
+  }
+  if (!req.user.restaurantId) {
+   const token = jwt.sign(
+    {
+     user: {
+      ...req.user,
+      restaurantId: restaurant._id,
+     },
+    },
+    process.env.JWT_SEC as string,
+    { expiresIn: "15" },
+   );
+   return res.json({ restaurant, token });
+  }
+  return res.json({ restaurant });
+ },
+);
+
+// export const 
