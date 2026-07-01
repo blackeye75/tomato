@@ -14,10 +14,13 @@ import Unauthorized from './pages/Unauthorized'
 import { useAppData } from './context/AppContext'
 function App() {
 
-  const { user } = useAppData()
-  // if (user && user?.role === "seller") {
-  //   return <Restaurant />
-  // }
+  const { user,loading } = useAppData()
+  if(loading){
+    return <div>Loading</div>
+  }
+  if (user && user?.role === "seller") {
+    return <Restaurant />
+  }
 
   return (
     <>
@@ -32,7 +35,7 @@ function App() {
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />} >
-            <Route path='/' element={user?.role === 'seller' ? <Restaurant /> : <Home />} />
+            <Route path='/' element={ <Home />} />
             <Route path='/select-role' element={<SelectRole />} />
             <Route path='/account' element={<Account />} />
           </Route>

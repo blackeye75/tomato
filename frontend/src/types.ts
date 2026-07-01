@@ -25,3 +25,20 @@ export interface AppContextType {
  location: LocationData | null;
  city: string;
 }
+
+export interface IRestaurant {
+ _id: string;
+ name: string;
+ description: string;
+ image: string;
+ ownerId: string;
+ phone: number;
+ isVerifed: boolean;
+ autoLocation: {
+  type: "Point";
+  coordinates: [number, number];
+  formatedAddress: string;
+ };
+ isOpen: boolean;
+ createdAt: Date;
+}

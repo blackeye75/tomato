@@ -9,7 +9,7 @@ import jwt from "jsonwebtoken";
 export const addRestaurants = TryCatch(
  async (req: AuthenticatedRequest, res) => {
   const user = req.user;
-  if (!user) return res.status(401).json({ message: "Unauthorize" });
+  if (!user) return res.status(401).json({ message: "Unauthorized" });
   const existingRestaurants = await Restaurant.findOne({ owner_id: user._id });
   if (existingRestaurants) {
    return res.status(400).json({ message: "Resturant already exists" });
@@ -62,7 +62,7 @@ export const fetchMyRestaurant = TryCatch(
   }
   const restaurant = await Restaurant.findOne({ ownerId: req.user._id });
   if (!restaurant) {
-   return res.status(400).json({ mssage: "Invalid user" });
+   return res.status(400).json({ message: "No Restaurant found" });
   }
   if (!req.user.restaurantId) {
    const token = jwt.sign(
@@ -81,4 +81,4 @@ export const fetchMyRestaurant = TryCatch(
  },
 );
 
-// export const 
+// export const

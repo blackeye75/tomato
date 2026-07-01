@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { IUser } from "../model/User.js";
+import { IUser, IUserPayload } from "../model/User.js";
 
 export interface AuthenticatedRequest extends Request {
- user?: IUser | null;
+ user?: IUserPayload | null;
 }
 export const isAuth = async (
  req: AuthenticatedRequest,
@@ -30,9 +30,9 @@ export const isAuth = async (
    res.status(401).json({ message: "Invalid Token" });
    return;
   }
-  req.user= decodedValue.user;
+  req.user = decodedValue.user;
   next();
  } catch (error) {
-  res.status(500).json({message:"Please Login - JWT error"})
+  res.status(500).json({ message: "Please Login - JWT error" });
  }
 };

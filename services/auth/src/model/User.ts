@@ -1,10 +1,14 @@
-import mongoose, { pDocument, Schema, model } from "mongoose";
+import { Schema, Types, model } from "mongoose";
 
 export interface IUser {
  email: string;
  name: string;
  image: string;
  role: string;
+}
+
+export interface IUserPayload extends IUser {
+ _id: Types.ObjectId | string;
 }
 
 const schema: Schema<IUser> = new Schema(
