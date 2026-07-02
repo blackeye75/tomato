@@ -8,6 +8,7 @@ router.post("/upload", async (req, res) => {
   const cloud = await cloudinary.v2.uploader.upload(buffer)
   res.json({url:cloud.secure_url})
  } catch (error: any) {
+   console.log(error.message+" From cloudinary upload route")
   res.status(500).json({
    message: error.message,
   });

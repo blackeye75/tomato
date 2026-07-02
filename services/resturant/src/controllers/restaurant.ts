@@ -6,7 +6,9 @@ import TryCatch from "../middleware/tryCatch.js";
 import Restaurant from "../model/Resturant.js";
 import jwt from "jsonwebtoken";
 
-export const addRestaurants = TryCatch(
+export const 
+
+addRestaurants = TryCatch(
  async (req: AuthenticatedRequest, res) => {
   const user = req.user;
   if (!user) return res.status(401).json({ message: "Unauthorized" });
@@ -14,9 +16,10 @@ export const addRestaurants = TryCatch(
   if (existingRestaurants) {
    return res.status(400).json({ message: "Resturant already exists" });
   }
+  // console.log(req.body)
   const { name, description, latitude, longitude, formattedAddress, phone } =
    req.body;
-  if (!name || !latitude || longitude) {
+  if (!name || !latitude || !longitude) {
    return res
     .status(400)
     .json({ message: "All feilds are required, please give all details" });
@@ -26,12 +29,14 @@ export const addRestaurants = TryCatch(
   if (!file) {
    return res.status(400).json({ message: "Please give all details " });
   }
+  // console.log(file)
   const fileBuffer = getBuffer(file);
   if (!fileBuffer?.content) {
    return res.status(500).json({
     message: "Failed to create file buffer",
    });
   }
+  console.log("1")
   const { data: uploadResult } = await axios.post(
    `${process.env.UTILS_SERVICE}/api/upload`,
    { buffer: fileBuffer.content },
@@ -47,6 +52,7 @@ export const addRestaurants = TryCatch(
     coordinates: [Number(latitude), Number(longitude)],
     formattedAddress,
    },
+   isVerifed: false,
   });
   return res.status(201).json({
    message: "Restaurant Created Successfully",
