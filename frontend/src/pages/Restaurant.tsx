@@ -14,7 +14,7 @@ const Restaurant = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`
         }
       })
-      setRestaurant(data.restaurant || null)
+      setRestaurant(data.restaurant || null) 
       if (data.token) {
         localStorage.setItem("token", data.token)
       }

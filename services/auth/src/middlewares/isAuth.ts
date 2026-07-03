@@ -32,7 +32,10 @@ export const isAuth = async (
   }
   req.user = decodedValue.user;
   next();
- } catch (error) {
-  res.status(500).json({ message: "Please Login - JWT error" });
+ } catch (error: any) {
+  console.log(error, "isAuth authService");
+  res
+   .status(500)
+   .json({ message: "Please Login - JWT error", error: error.message });
  }
 };

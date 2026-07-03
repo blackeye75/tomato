@@ -36,7 +36,6 @@ addRestaurants = TryCatch(
     message: "Failed to create file buffer",
    });
   }
-  console.log("1")
   const { data: uploadResult } = await axios.post(
    `${process.env.UTILS_SERVICE}/api/upload`,
    { buffer: fileBuffer.content },
@@ -79,7 +78,7 @@ export const fetchMyRestaurant = TryCatch(
      },
     },
     process.env.JWT_SEC as string,
-    { expiresIn: "15" },
+    { expiresIn: "15d" },
    );
    return res.json({ restaurant, token });
   }
