@@ -6,9 +6,7 @@ import TryCatch from "../middleware/tryCatch.js";
 import Restaurant from "../model/Resturant.js";
 import jwt from "jsonwebtoken";
 
-export const 
-
-addRestaurants = TryCatch(
+export const addRestaurants = TryCatch(
  async (req: AuthenticatedRequest, res) => {
   const user = req.user;
   if (!user) return res.status(401).json({ message: "Unauthorized" });

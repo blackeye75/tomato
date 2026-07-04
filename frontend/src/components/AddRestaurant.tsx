@@ -5,7 +5,11 @@ import axios from 'axios'
 import { restaurantService } from '../main'
 import { BiMap, BiUpload } from 'react-icons/bi'
 
-const AddRestaurant = () => {
+interface props {
+  fetchMyRestaurant: () => Promise<void>
+}
+
+const AddRestaurant = ({ fetchMyRestaurant }:props) => {
   const [name, setName] = useState("")
   const [description, setdescription] = useState("")
   const [phone, setPhone] = useState("")
@@ -35,6 +39,7 @@ const AddRestaurant = () => {
         }
       })
       toast.success("Restaurant Created Successfully")
+      fetchMyRestaurant()
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Something went wrong")
       console.log(error)
@@ -46,7 +51,7 @@ const AddRestaurant = () => {
     <div className='min-h-screen bg-gray-50 px-4 py-6' >
       <div className='mx-auto max-w-lg rounded-xl bg-white p-6 shadow-sm space-y-5 ' >
         <h1 className='text-xl font-semibold' >Add Your Restaurant</h1>
-        <input type="text"  placeholder="Restaurant Name" value={name} onChange={(e) => setName(e.target.value)} className='w-full rounded-lg border px-4 py-2 text-sm outline-none' />
+        <input type="text" placeholder="Restaurant Name" value={name} onChange={(e) => setName(e.target.value)} className='w-full rounded-lg border px-4 py-2 text-sm outline-none' />
         <input type="number" placeholder="Phone Number" value={phone} onChange={(e) => setPhone(e.target.value)} className='w-full rounded-lg border px-4 py-2 text-sm outline-none' />
         <textarea placeholder="Description" value={description} onChange={(e) => setdescription(e.target.value)} className='w-full rounded-lg border px-4 py-2 text-sm outline-none' />
         <label htmlFor="image" className='flex cursor-pointer items-center gap-3 rounded-lg border px-4 py-2 text-sm outline-none text-gray-600 hover:bg-gray-50' >

@@ -71,7 +71,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
       }
     })
   }, [])
-  return <AppContext.Provider value={{ location, loadingLocation, city, user, loading, isAuth, setUser, setIsAuth, setLoading }}>{children}</AppContext.Provider>
+  return <AppContext.Provider value={{ location, loadingLocation, city, user, loading, isAuth, setUser, setIsAuth,setLoading }}>{children}</AppContext.Provider>
 }
 
 export const useAppData = (): AppContextType => {

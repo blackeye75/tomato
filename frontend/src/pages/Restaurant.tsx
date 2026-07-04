@@ -14,9 +14,10 @@ const Restaurant = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`
         }
       })
-      setRestaurant(data.restaurant || null) 
+      setRestaurant(data.restaurant || null)
       if (data.token) {
         localStorage.setItem("token", data.token)
+        window.location.reload()
       }
     } catch (error) {
       console.log(error)
@@ -31,10 +32,10 @@ const Restaurant = () => {
     return <div className='flex items-center justify-center min-h-screen  text-gray-500' >Loading Your Restaurant...</div>
   }
 
-  if(!restaurant) return <AddRestaurant/>
+  if (!restaurant) return <AddRestaurant fetchMyRestaurant={fetchMyRestaurant} />
 
   return (
-    <div>Restaurant</div>
+    <div className='min-h-screen bg-gray-200' >Restaurant</div>
   )
 }
 
