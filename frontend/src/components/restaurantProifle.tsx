@@ -43,7 +43,7 @@ const RestaurantProfile = ({ restaurant, isSeller, onUpdate }: props) => {
         }
       })
       toast.success(data.message)
-      onUpdate(data.restaurant) 
+      onUpdate(data.restaurant)
       setEditMode(false)
     } catch (error) {
       console.log(error)
@@ -86,7 +86,7 @@ const RestaurantProfile = ({ restaurant, isSeller, onUpdate }: props) => {
                 {loading ? "Saving..." : "Save"}</button>
             }
             {
-              isSeller && <button onClick={toggleOpenStatus} disabled={loading} className={`px-3 py-1 text-sm tracking-tight rounded-lg text-white ${isOpen ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'}`} > {loading ? "Updating..." : isOpen ? "Close Restaurant" : "Open Restaurant"}</button>
+              isSeller && <button onClick={toggleOpenStatus} disabled={loading} className={`px-3 py-1 text-sm tracking-tight rounded-lg text-white ${isOpen ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'}`} > {loading ? "Updating..." : isOpen ? "Close Restaurant" : "Open Restaurant"}</button>
             }
           </div>
         </div>
