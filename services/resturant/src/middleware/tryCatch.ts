@@ -5,9 +5,9 @@ const TryCatch = (handler: RequestHandler): RequestHandler => {
   try {
    await handler(req, res, next);
   } catch (error: any) {
-    console.log(error.message+" From asyncHandler");
+    console.log(error+" From asyncHandler");
    res.status(500).json({
-    message: error.message+" From asyncHandler",
+    message: error.message+error +" From asyncHandler",
    });
   }
  };

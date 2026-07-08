@@ -38,7 +38,7 @@ const schema = new Schema<IMenuItem>(
   },
   isAvailable: {
    type: Boolean,
-   reuired: true,
+   default: true,
   },
  },
  {
@@ -46,4 +46,4 @@ const schema = new Schema<IMenuItem>(
  },
 );
 
-export default mongoose.model<IMenuItem>("MenuItem",schema)
+export default mongoose.model<IMenuItem>("MenuItem", schema);

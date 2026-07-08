@@ -4,6 +4,7 @@ import { AuthenticatedRequest } from "../middleware/isAuth.js";
 import TryCatch from "../middleware/tryCatch.js";
 import Resturant from "../model/Resturant.js";
 import MenuItems from "../model/MenuItems.js";
+// import {Response} from "express"
 
 export const addMenuItem = TryCatch(async (req: AuthenticatedRequest, res) => {
  if (!req.user) {
@@ -33,10 +34,12 @@ export const addMenuItem = TryCatch(async (req: AuthenticatedRequest, res) => {
    message: "Failed to create file buffer",
   });
  }
+
  const { data: uploadResult } = await axios.post(
-  `${process.env.UTILS_SERVICE}/api/upload`,
-  { buffer: fileBuffer.content },
- );
+   `${process.env.UTILS_SERVICE}/api/upload`,
+   { buffer: fileBuffer.content },
+  );
+
  const item = await MenuItems.create({
   name,
   description,

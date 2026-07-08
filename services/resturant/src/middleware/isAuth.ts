@@ -20,6 +20,7 @@ export const isAuth = async (
 ): Promise<void> => {
  try {
   const authHeader = req.headers.authorization;
+  // console.log(authHeader);
   if (!authHeader || !authHeader.startsWith("Bearer")) {
    res.status(401).json({ message: "Please Login - No auth header" });
    return;
@@ -41,7 +42,7 @@ export const isAuth = async (
   req.user = decodedValue.user;
   next();
  } catch (error) {
-  console.log(error)
+  console.log(error);
   res.status(500).json({ message: "Please Login - JWT error" });
  }
 };

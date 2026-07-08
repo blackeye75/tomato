@@ -7,7 +7,7 @@ import Restaurant from "../model/Resturant.js";
 import jwt from "jsonwebtoken";
 
 export const addRestaurants = TryCatch(
- async (req: AuthenticatedRequest, res) => {
+ async (req: AuthenticatedRequest, res: Response) => {
   const user = req.user;
   if (!user) return res.status(401).json({ message: "Unauthorized" });
   const existingRestaurants = await Restaurant.findOne({ owner_id: user._id });
@@ -34,15 +34,26 @@ export const addRestaurants = TryCatch(
     message: "Failed to create file buffer",
    });
   }
-  const { data: uploadResult } = await axios.post(
-   `${process.env.UTILS_SERVICE}/api/upload`,
-   { buffer: fileBuffer.content },
-  );
+  let url;
+  try {
+   const { data: uploadResult } = await axios.post(
+    `${process.env.UTILS_SERVICE}/api/upload`,
+    { buffer: fileBuffer.content },
+   );
+   url = uploadResult.url;
+  } catch (error: any) {
+   console.log(error.message, "from console.log error"); // catcing error from utils service
+   throw new Error("Failed to upload image n e");
+   return res.status(500).json({
+    message: "Failed to upload image",
+   });
+  }
+
   const restaurant = await Restaurant.create({
    name,
    description,
    phone,
-   image: uploadResult.url,
+   image: url,
    ownerId: user._id,
    autoLocation: {
     type: "Point",
@@ -106,7 +117,7 @@ export const updateStatusRestaurant = TryCatch(
 );
 
 export const updateRestaurant = TryCatch(
- async (req: AuthenticatedRequest, res) => {
+ async (req: AuthenticatedRequest, res: Response) => {
   if (!req.user) {
    return res.status(403).json({ message: "Please Login" });
   }
@@ -120,5 +131,59 @@ export const updateRestaurant = TryCatch(
    return res.status(404).json({ message: "Restaurant not found" });
   }
   res.json({ message: "Restaurant Updated", restaurant });
+ },
+);
+
+export const getNearbyRestaurant = TryCatch(
+ async (req: AuthenticatedRequest, res: Response) => {
+  const { latitude, longitude, radius = 5000, search = "" } = req.query;
+  if (!longitude || !latitude) {
+   return res
+    .status(400)
+    .json({ message: "Latitude and Longitude are required " });
+  }
+  const query: any = {
+   isVerfied: true,
+  };
+
+  if (search && typeof search === "string") {
+   query.name = { $regex: search, $option: "i" };
+  }
+  const restaurant = await Restaurant.aggregate([
+   {
+    $geoNear: {
+     near: {
+      type: "Point",
+      coordinates: [Number(longitude), Number(latitude)],
+     },
+     distanceField: "distance",
+     maxDistance: Number(radius),
+     spherical: true,
+     query,
+    },
+   },
+   {
+    $sort: {
+     isOpen: -1,
+     distance: 1,
+    },
+   },
+   {
+    $addFields: {
+     distanceKm: {
+      $round: [{ $divide: ["$distance", 1000] }, 2],
+     },
+    },
+   },
+  ]);
+
+  res.json({ success: true, count: restaurant.length, restaurant });
+ },
+);
+
+export const fetchSingleRestaurant = TryCatch(
+ async (req: AuthenticatedRequest, res) => {
+  const restuarant = await Restaurant.findById(req.params.id);
+  res.json(restuarant);
  },
 );

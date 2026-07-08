@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import type { IRestaurant } from '../types'
+import { type IMenuItem, type IRestaurant } from '../types'
 import axios from 'axios'
 import { restaurantService } from '../main'
 import AddRestaurant from '../components/AddRestaurant'
 import RestaurantProfile from '../components/restaurantProifle'
+import MenuItems from '../components/menuItems'
+import AddMenuItem from '../components/addMenuItem'
 
 type sellerTab = "menu" | "add-item" | "sales"
 
@@ -32,13 +34,36 @@ const Restaurant = () => {
   useEffect(() => {
     fetchMyRestaurant()
   }, [])
+
+  const [menuItems, setMenuItems] = useState<IMenuItem[]>([])
+
+  const fetchMenuItems = async (restaurantId: string) => {
+    try {
+      const { data } = await axios.get(`${restaurantService}/api/item/all/${restaurantId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      })
+      setMenuItems(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (restaurant?._id) {
+      fetchMenuItems(restaurant._id)
+    }
+  }, [restaurant])
+
+
   if (loading) {
     return <div className='flex items-center justify-center min-h-screen  text-gray-500' >Loading Your Restaurant...</div>
   }
 
   if (!restaurant) return <AddRestaurant fetchMyRestaurant={fetchMyRestaurant} />
   return (
-    <div className='min-h-screen bg-gray-50 px-4 py-6 space-y-6' >
+    <div className='min-h-screen bg-black/95 px-4 py-6 space-y-6' >
       <RestaurantProfile restaurant={restaurant} isSeller={true} onUpdate={setRestaurant} />
 
       <div className='rounded-xl bg-white shadow-sm ' >
@@ -51,12 +76,12 @@ const Restaurant = () => {
             ))
           }
         </div>
-        <div className="p-5">
+        <div className="p-5 h-[50vh]">
           {
-            tab === "menu" && <div>Menu</div>
+            tab === "menu" && <MenuItems items={menuItems} onItemDelete={() => fetchMenuItems(restaurant._id)} isSeller={true} />
           }
           {
-            tab === "add-item" && <div>Add Item</div>
+            tab === "add-item" && <AddMenuItem onItemAdded={() => fetchMenuItems(restaurant._id)} />
           }
           {
             tab === "sales" && <div>Sales</div>
