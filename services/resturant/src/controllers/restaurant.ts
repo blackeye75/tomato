@@ -57,10 +57,10 @@ export const addRestaurants = TryCatch(
    ownerId: user._id,
    autoLocation: {
     type: "Point",
-    coordinates: [Number(latitude), Number(longitude)],
+    coordinates: [Number(longitude), Number(latitude)],
     formattedAddress,
    },
-   isVerifed: false,
+   isVerified: false,
   });
   return res.status(201).json({
    message: "Restaurant Created Successfully",
@@ -143,11 +143,11 @@ export const getNearbyRestaurant = TryCatch(
     .json({ message: "Latitude and Longitude are required " });
   }
   const query: any = {
-   isVerfied: true,
+   isVerified: true,
   };
 
   if (search && typeof search === "string") {
-   query.name = { $regex: search, $option: "i" };
+   query.name = { $regex: search, $options: "i" };
   }
   const restaurant = await Restaurant.aggregate([
    {

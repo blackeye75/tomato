@@ -6,7 +6,7 @@ export interface IRestaurant extends Document {
  image: string;
  ownerId: string;
  phone: number;
- isVerifed: boolean;
+ isVerified: boolean;
  autoLocation: {
   type: "Point";
   coordinates: [number, number];
@@ -36,7 +36,7 @@ const schema = new Schema<IRestaurant>(
    type: String,
    required: true,
   },
-  isVerifed: {
+  isVerified: {
    type: Boolean,
    required: true,
   },

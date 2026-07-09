@@ -33,7 +33,7 @@ export interface IRestaurant {
  image: string;
  ownerId: string;
  phone: number;
- isVerifed: boolean;
+ isVerified: boolean;
  autoLocation: {
   type: "Point";
   coordinates: [number, number];
