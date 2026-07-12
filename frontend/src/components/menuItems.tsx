@@ -6,6 +6,7 @@ import { BiLoader, BiTrash } from "react-icons/bi";
 import toast, { LoaderIcon } from "react-hot-toast";
 import axios from "axios";
 import { restaurantService } from "../main";
+import { useAppData } from "../context/AppContext";
 
 interface MenuItemProps {
   items: IMenuItem[];
@@ -14,7 +15,7 @@ interface MenuItemProps {
 }
 
 const MenuItems = ({ items, onItemDelete, isSeller }: MenuItemProps) => {
-  const [loadingItemId, setLoadingItemId] = useState(null);
+  const [loadingItemId, setLoadingItemId] = useState<string | null>(null);
   const handleDelete = async (itemId: string) => {
     const confirm = window.confirm("Are You Sure? You Want to delete this item");
     if (!confirm) {
@@ -52,6 +53,25 @@ const MenuItems = ({ items, onItemDelete, isSeller }: MenuItemProps) => {
       toast.error("Failed to update");
     }
   };
+
+  const { fetchCart } = useAppData()
+  const addToCart = async (restaurantId: string, itemId: string) => {
+    try {
+      setLoadingItemId(itemId)
+      const { data } = await axios.post(`${restaurantService}/api/cart/add`, { restaurantId, itemId }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      })
+      toast.success(data.message)
+      fetchCart()
+    } catch (error: any) {
+      // toast.error(error.response.data.message)
+      toast.error(error.message)
+    } finally {
+      setLoadingItemId(null)
+    }
+  }
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {items.map((item) => {
@@ -105,13 +125,13 @@ const MenuItems = ({ items, onItemDelete, isSeller }: MenuItemProps) => {
                 {!isSeller && (
                   <button
                     disabled={!item.isAvailable || isLoading}
-                    onClick={() => { }}
+                    onClick={() => addToCart(item.restaurantId, item._id)}
                     className={`flex items-center justify-center rounded-lg p-2 ${!item.isAvailable || isLoading ? "cursor-not-allowed text-gray-400" : "hover:bg-red-500 hover:text-white text-red-500 "}`}
                   >
                     {isLoading ? (
                       <BiLoader size={18} className="animate-spin" />
                     ) : (
-                      <BsCartPlus size={18} className=" " />  
+                      <BsCartPlus size={18} className=" " />
                     )}
                   </button>
                 )}

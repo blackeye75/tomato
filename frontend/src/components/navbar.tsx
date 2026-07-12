@@ -5,7 +5,7 @@ import { CgShoppingCart } from 'react-icons/cg'
 import { BiMap, BiSearch } from 'react-icons/bi'
 
 const Navbar = () => {
-  const { isAuth, user, city, loadingLocation } = useAppData()
+  const { isAuth, user, city, loadingLocation, quantity } = useAppData()
   const currLocation = useLocation()
   const isHome = currLocation.pathname === "/"
   const [searchParam, setSearchParam] = useSearchParams()
@@ -29,7 +29,7 @@ const Navbar = () => {
         <div className='flex items-center gap-4' >
           <Link to="/cart" className='relative' >
             <CgShoppingCart className='h-6 w-6 text-[#E23774]' />
-            <span className='absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#E23774] text-xs text-white' >0</span>
+            <span className='absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#E23774] text-xs text-white' >{quantity}</span>
           </Link>
           {isAuth ? (
             <Link to="/account" className='text-sm text-gray-700' >{user?.name ? user?.name.charAt(0).toUpperCase() + user?.name.slice(1) : 'Account'}</Link>
