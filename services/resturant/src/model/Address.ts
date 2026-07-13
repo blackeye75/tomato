@@ -44,3 +44,5 @@ const schema = new Schema<IAddress>(
 );
 
 schema.index({ location: "2dsphere" });
+
+export default mongoose.model<IAddress>("Address",schema)

@@ -14,6 +14,8 @@ import Unauthorized from './pages/Unauthorized'
 import { useAppData } from './context/AppContext'
 import RestaurantPage from './pages/RestaurantPage'
 import Cart from './pages/Cart'
+import AddAddressPage from './pages/Address'
+import Checkout from './pages/Checkout'
 function App() {
 
   const { user, loading } = useAppData()
@@ -44,6 +46,8 @@ function App() {
             <Route path='/cart' element={<Cart />} />
             <Route path='/select-role' element={<SelectRole />} />
             <Route path='/account' element={<Account />} />
+            <Route path='/address' element={<AddAddressPage />} />
+            <Route path='/checkout' element={<Checkout />} />
           </Route>
           {/* Error Pages */}
           <Route path="/unauthorized" element={<Unauthorized />} />
