@@ -4,8 +4,10 @@ import cors from "cors"
 // import connectDB from './config/db.js';
 import uploadRoutes from "./routes/cloudinary.js"
 import dotenv from 'dotenv'
+import { connectRabbitMQ } from './config/rabbitmq.js'
 dotenv.config()
 
+connectRabbitMQ()
 
 const app = express()
 app.use(cors())
