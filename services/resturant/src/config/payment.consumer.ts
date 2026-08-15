@@ -14,11 +14,32 @@ export const startPaymentConsumer = async () => {
         return;
       }
       const { orderId } = event.data;
-      const order = Order.findOneAndUpdate({
-        _id: orderId,
-        paymentStatus: { $ne: 'paid' },
-      });
-      
-    } catch (error) {}
+      const order = Order.findOneAndUpdate(
+        {
+          _id: orderId,
+          paymentStatus: { $ne: 'paid' },
+        },
+        {
+          $set: {
+            paymentStatus: 'paid',
+            status: 'placed',
+          },
+          $unset: {
+            expiresAt: 1,
+          },
+        },
+        { new: true }
+      );
+      if (!order) {
+        channel.ack(msz);
+        return;
+      }
+      console.log('order placed from rabbitmq consumer', orderId);
+      //socket work
+
+      channel.ack(msz);
+    } catch (error) {
+      console.error('payment consumer error', error);
+    }
   });
 };

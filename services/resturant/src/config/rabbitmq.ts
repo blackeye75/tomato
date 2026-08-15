@@ -1,10 +1,14 @@
 import amqp from 'amqplib';
 let channel: amqp.Channel;
 export const connectRabbitMQ = async () => {
-  const connection = await amqp.connect(process.env.RABBITMQ_URL!);
-  channel = await connection.createChannel();
-  await channel.assertQueue(process.env.PAYMENT_QUEUE!, { durable: true });
-  console.log('🐰 connected to rabbitmq(From Restaurant service)');
+  try {
+    const connection = await amqp.connect(process.env.RABBITMQ_URL!);
+    channel = await connection.createChannel();
+    await channel.assertQueue(process.env.PAYMENT_QUEUE!, { durable: true });
+    console.log('🐰 connected to rabbitmq(From Restaurant service)');
+  } catch (error) {
+    console.log(error,"RabbitMQ connection error");
+  }
 };
 
 export const getChannel = () => channel;
