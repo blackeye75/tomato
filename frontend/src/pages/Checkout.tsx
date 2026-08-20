@@ -79,6 +79,12 @@ const payWithRazorpay = async()=>{
     if(!order) return;
     const {orderId, amount} = order;
     const {data} = await axios.post(`${utilsService}/api/payment/create`, {orderId,}, {})
+    const { razorpayOrderId, key } = data;
+    const options = {
+      key,
+      amount: amount * 100,
+      order_id: razorpayOrderId
+    }
   } catch (error) {
     console.log(error)
   } finally {

@@ -14,7 +14,7 @@ export const startPaymentConsumer = async () => {
         return;
       }
       const { orderId } = event.data;
-      const order = Order.findOneAndUpdate(
+      const order = await Order.findOneAndUpdate(
         {
           _id: orderId,
           paymentStatus: { $ne: 'paid' },
@@ -34,7 +34,7 @@ export const startPaymentConsumer = async () => {
         channel.ack(msz);
         return;
       }
-      console.log('order placed from rabbitmq consumer', orderId);
+      console.log('order placed from rabbitmq consumer', order._id);
       //socket work
 
       channel.ack(msz);
